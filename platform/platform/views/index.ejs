@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- شريط التنقل -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="bi bi-building"></i> ERPNext SaaS Platform
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/"><i class="bi bi-house"></i> الرئيسية</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/tenants"><i class="bi bi-people"></i> العملاء</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/monitoring"><i class="bi bi-speedometer2"></i> المراقبة</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/billing"><i class="bi bi-credit-card"></i> الفوترة</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- المحتوى الرئيسي -->
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="text-center mb-5">
+                    <i class="bi bi-cloud"></i> منصة ERPNext متعددة المستأجرين
+                </h1>
+                
+                <!-- بطاقات الإحصائيات -->
+                <div class="row mb-5">
+                    <div class="col-md-3 mb-3">
+                        <div class="card text-center border-primary">
+                            <div class="card-body">
+                                <i class="bi bi-building text-primary" style="font-size: 2rem;"></i>
+                                <h3 class="mt-2" id="totalTenants">0</h3>
+                                <p class="text-muted">إجمالي العملاء</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card text-center border-success">
+                            <div class="card-body">
+                                <i class="bi bi-check-circle text-success" style="font-size: 2rem;"></i>
+                                <h3 class="mt-2" id="activeTenants">0</h3>
+                                <p class="text-muted">عملاء نشطون</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card text-center border-info">
+                            <div class="card-body">
+                                <i class="bi bi-currency-dollar text-info" style="font-size: 2rem;"></i>
+                                <h3 class="mt-2" id="totalRevenue">$0</h3>
+                                <p class="text-muted">الإيرادات الشهرية</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card text-center border-warning">
+                            <div class="card-body">
+                                <i class="bi bi-heart-pulse text-warning" style="font-size: 2rem;"></i>
+                                <h3 class="mt-2" id="systemHealth">100%</h3>
+                                <p class="text-muted">صحة النظام</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- نموذج إضافة عميل جديد -->
+                <div class="card mb-5">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0"><i class="bi bi-plus-circle"></i> إضافة عميل جديد</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="createTenantForm">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">اسم الشركة <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="name" required 
+                                           placeholder="مثال: شركة النور للتجارة">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">النطاق الفرعي <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="subdomain" required 
+                                               pattern="[a-z0-9-]+" placeholder="alnoor"
+                                               title="أحرف صغيرة وأرقام وشرطات فقط">
+                                        <span class="input-group-text">.localhost</span>
+                                    </div>
+                                    <small class="text-muted">أحرف إنجليزية صغيرة وأرقام فقط</small>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">البريد الإلكتروني <span class="text-danger">*</span></label>
+                                    <input type="email" class="form-control" name="email" required
+                                           placeholder="admin@company.com">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">الخطة <span class="text-danger">*</span></label>
+                                    <select class="form-control" name="plan" required>
+                                        <option value="">اختر الخطة</option>
+                                        <option value="starter">Starter - $29/شهر (2GB RAM, 20GB Storage)</option>
+                                        <option value="professional">Professional - $79/شهر (4GB RAM, 50GB Storage)</option>
+                                        <option value="enterprise">Enterprise - $199/شهر (8GB RAM, 100GB Storage)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-plus-circle"></i> إنشاء العميل
+                                    </button>
+                                    <button type="reset" class="btn btn-secondary">
+                                        <i class="bi bi-x-circle"></i> إلغاء
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- قائمة العملاء -->
+                <div class="card">
+                    <div class="card-header bg-secondary text-white">
+                        <h3 class="mb-0"><i class="bi bi-list"></i> العملاء الحاليون</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>الشركة</th>
+                                        <th>النطاق الفرعي</th>
+                                        <th>البريد الإلكتروني</th>
+                                        <th>الخطة</th>
+                                        <th>الحالة</th>
+                                        <th>تاريخ الإنشاء</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tenantsTable">
+                                    <tr>
+                                        <td colspan="7" class="text-center">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden">جاري التحميل...</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal لعرض الإحصائيات -->
+    <div class="modal fade" id="statsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">إحصائيات العميل</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="statsContent">
+                    <!-- سيتم ملؤها ديناميكياً -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-5 py-3 bg-light">
+        <div class="container text-center">
+            <p class="mb-0">© 2024 ERPNext SaaS Platform - جميع الحقوق محفوظة</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/js/main.js"></script>
+</body>
+</html>

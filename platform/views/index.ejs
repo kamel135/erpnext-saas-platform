@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERPNext SaaS Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-5">🎉 منصة ERPNext SaaS تعمل بنجاح!</h1>
+        
+        <div class="alert alert-success">
+            <h4>مرحباً! المنصة تعمل الآن</h4>
+            <p>يمكنك البدء في إنشاء عملاء جدد</p>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h3>إنشاء عميل جديد</h3>
+            </div>
+            <div class="card-body">
+                <form id="createTenantForm">
+                    <div class="mb-3">
+                        <label>اسم الشركة</label>
+                        <input type="text" class="form-control" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>النطاق الفرعي</label>
+                        <input type="text" class="form-control" name="subdomain" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>البريد الإلكتروني</label>
+                        <input type="email" class="form-control" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>الخطة</label>
+                        <select class="form-control" name="plan">
+                            <option value="starter">Starter</option>
+                            <option value="professional">Professional</option>
+                            <option value="enterprise">Enterprise</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">إنشاء</button>
+                </form>
+            </div>
+        </div>
+        
+        <div id="result" class="mt-3"></div>
+    </div>
+    
+    <script>
+    document.getElementById('createTenantForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData);
+        
+        try {
+            const response = await fetch('/api/tenants', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+            const result = await response.json();
+            document.getElementById('result').innerHTML = 
+                `<div class="alert alert-success">تم إنشاء العميل بنجاح! ID: ${result.tenantId}</div>`;
+        } catch (error) {
+            document.getElementById('result').innerHTML = 
+                `<div class="alert alert-danger">خطأ: ${error}</div>`;
+        }
+    });
+    </script>
+</body>
+</html>

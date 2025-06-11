@@ -1,0 +1,38 @@
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Dependencies
+node_modules/
+platform/node_modules/
+
+# Docker volumes
+postgres_data/
+redis_data/
+platform_db/
+
+# Tenant data
+tenants/*/
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Backups
+backups/*.sql
+backups/*.tar.gz
+
+# Temporary files
+*.tmp
+*.temp

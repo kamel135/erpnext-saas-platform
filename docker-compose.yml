@@ -1,0 +1,79 @@
+services:
+  # قاعدة بيانات المنصة
+  platform-db:
+    image: postgres:15
+    container_name: saas_platform_db
+    environment:
+      POSTGRES_DB: saas_platform
+      POSTGRES_USER: saas_admin
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-admin123}
+    volumes:
+      - platform_db:/var/lib/postgresql/data
+    networks:
+      - platform_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U saas_admin -d saas_platform"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis للمنصة
+  platform-redis:
+    image: redis:7-alpine
+    container_name: saas_platform_redis
+    networks:
+      - platform_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # تطبيق إدارة SaaS
+  saas-manager:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.platform
+    container_name: saas_manager
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://saas_admin:${DB_PASSWORD:-admin123}@platform-db:5432/saas_platform
+      REDIS_URL: redis://platform-redis:6379
+      SESSION_SECRET: ${SESSION_SECRET:-your-secret-key}
+      NODE_ENV: ${NODE_ENV:-development}
+    volumes:
+      - ./templates:/app/templates
+      - ./scripts:/app/scripts:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      platform-db:
+        condition: service_healthy
+      platform-redis:
+        condition: service_healthy
+    networks:
+      - platform_network
+    restart: unless-stopped
+
+  # Nginx للمنصة
+  platform-nginx:
+    image: nginx:alpine
+    container_name: saas_platform_nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/sites:/etc/nginx/sites-enabled:ro
+    depends_on:
+      - saas-manager
+    networks:
+      - platform_network
+    restart: unless-stopped
+
+networks:
+  platform_network:
+    driver: bridge
+
+volumes:
+  platform_db:

@@ -1,17 +1,30 @@
 # Contributing to ERPNext SaaS Platform
 
-نرحب بمساهماتكم! 
+We love your input! We want to make contributing to this project as easy and transparent as possible.
 
-## كيفية المساهمة
+## Development Process
 
-1. Fork المشروع
-2. أنشئ branch جديد (`git checkout -b feature/amazing-feature`)
-3. Commit تغييراتك (`git commit -m 'Add amazing feature'`)
-4. Push إلى الـ branch (`git push origin feature/amazing-feature`)
-5. افتح Pull Request
+1. Fork the repo and create your branch from `main`
+2. If you've added code that should be tested, add tests
+3. Ensure the test suite passes
+4. Make sure your code follows the existing style
+5. Issue that pull request!
 
-## معايير الكود
+## Code Style
 
-- استخدم ESLint
-- اكتب تعليقات واضحة
-- اتبع نمط الكود الموجود
+- Use 4 spaces for indentation (no tabs)
+- Follow PEP 8 for Python code
+- Add docstrings to all functions
+
+## Reporting Bugs
+
+Report bugs using GitHub Issues. Include:
+- A quick summary
+- Steps to reproduce
+- Expected behavior
+- Actual behavior
+- Notes (possibly including why you think this might be happening)
+
+## License
+
+By contributing, you agree that your contributions will be licensed under the MIT License.

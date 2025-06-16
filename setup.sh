@@ -1,84 +1,39 @@
 #!/bin/bash
 
-set -e
+echo "🚀 Setting up ERPNext SaaS Platform..."
 
-echo "🚀 ERPNext SaaS Platform Setup"
-echo "=============================="
-
-# Colors
-GREEN='\033[0;32m'
-RED='\033[0;31m'
-YELLOW='\033[1;33m'
-NC='\033[0m'
-
-# Check prerequisites
-echo -e "\n${YELLOW}📋 Checking prerequisites...${NC}"
-
+# Check Docker
 if ! command -v docker &> /dev/null; then
-    echo -e "${RED}❌ Docker is not installed${NC}"
-    echo "Please install Docker first: https://docs.docker.com/get-docker/"
+    echo "❌ Docker is not installed. Please install Docker first."
     exit 1
 fi
 
+# Check Docker Compose
 if ! docker compose version &> /dev/null; then
-    echo -e "${RED}❌ Docker Compose is not installed${NC}"
+    echo "❌ Docker Compose is not installed. Please install Docker Compose first."
     exit 1
 fi
 
-echo -e "${GREEN}✅ All prerequisites installed${NC}"
-
-# Create .env if not exists
-if [ ! -f .env ]; then
-    echo -e "\n${YELLOW}🔐 Creating .env file...${NC}"
-    cp .env.example .env
-    
-    # Generate secure passwords
-    DB_PASSWORD=$(openssl rand -base64 32 | tr -d "=+/" | cut -c1-25)
-    SESSION_SECRET=$(openssl rand -base64 32 | tr -d "=+/" | cut -c1-25)
-    
-    # Update .env with generated values
-    if [[ "$OSTYPE" == "darwin"* ]]; then
-        # macOS
-        sed -i '' "s/your_secure_password_here/$DB_PASSWORD/" .env
-        sed -i '' "s/generate-a-secure-random-string/$SESSION_SECRET/" .env
-    else
-        # Linux
-        sed -i "s/your_secure_password_here/$DB_PASSWORD/" .env
-        sed -i "s/generate-a-secure-random-string/$SESSION_SECRET/" .env
-    fi
-    
-    echo -e "${GREEN}✅ .env file created with secure passwords${NC}"
-fi
-
-# Create necessary directories
-echo -e "\n${YELLOW}📁 Creating directories...${NC}"
-mkdir -p tenants logs backups nginx/sites
+# Create directories
+echo "📁 Creating necessary directories..."
+mkdir -p saas_sites
+mkdir -p logs
 
 # Set permissions
-chmod +x scripts/*.sh
+echo "🔒 Setting permissions..."
+sudo chown -R $USER:$USER saas_sites logs
 
-# Build and start services
-echo -e "\n${YELLOW}🔨 Building Docker images...${NC}"
-docker compose build
+# Copy env file
+if [ ! -f .env ]; then
+    echo "📝 Creating .env file..."
+    cp .env.example .env
+    echo "⚠️  Please edit .env file with your settings"
+fi
 
-echo -e "\n${YELLOW}🚀 Starting services...${NC}"
-docker compose up -d
+# Add hosts entry
+echo "🌐 Adding hosts entry..."
+if ! grep -q "manage.orbscope.local" /etc/hosts; then
+    echo "127.0.0.1 manage.orbscope.local" | sudo tee -a /etc/hosts
+fi
 
-# Wait for services to be ready
-echo -e "\n${YELLOW}⏳ Waiting for services to start...${NC}"
-sleep 10
-
-# Initialize database
-echo -e "\n${YELLOW}🗄️ Initializing database...${NC}"
-./scripts/init-db.sh
-
-# Show status
-echo -e "\n${YELLOW}📊 Service Status:${NC}"
-docker compose ps
-
-echo -e "\n${GREEN}✅ Setup completed successfully!${NC}"
-echo -e "\n📌 Access the platform at: ${YELLOW}http://localhost:3000${NC}"
-echo -e "📌 Platform API: ${YELLOW}http://localhost:3000/api${NC}"
-echo -e "\n💡 To create your first tenant, use the web interface or run:"
-echo -e "   ${YELLOW}./scripts/create_tenant.sh \"Company Name\" \"subdomain\" \"email@example.com\" \"plan\"${NC}"
-echo -e "\n📖 For more information, check the README.md file"
+echo "✅ Setup complete! Run 'docker compose up -d' to start the platform."

@@ -1,0 +1,14 @@
+http:
+  routers:
+    fallback:
+      entryPoints:
+        - websecure
+      rule: "HostRegexp(`{subdomain:[a-z0-9-]+}.orbscope.local`)"
+      priority: 1
+      service: control-proxy
+
+  services:
+    control-proxy:
+      loadBalancer:
+        servers:
+          - url: "http://control-plane:5001"

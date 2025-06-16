@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Logs - {{ site_name }}</title>
+  <style>
+    body {
+      font-family: monospace;
+      margin: 0;
+      padding: 20px;
+      background-color: #1e1e1e;
+      color: #d4d4d4;
+    }
+    h1 {
+      color: #4CAF50;
+      margin-bottom: 10px;
+    }
+    .controls {
+      margin-bottom: 20px;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #logs {
+      background-color: #000;
+      padding: 15px;
+      border-radius: 4px;
+      height: calc(100vh - 200px);
+      overflow-y: auto;
+      white-space: pre-wrap;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .log-line {
+      margin: 2px 0;
+    }
+    .log-error {
+      color: #ff6b6b;
+    }
+    .log-warning {
+      color: #ffd93d;
+    }
+    .log-info {
+      color: #6bcf7f;
+    }
+    .status {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 10px;
+      border-radius: 4px;
+      background-color: #333;
+    }
+    .status.connected {
+      background-color: #4CAF50;
+    }
+    .status.disconnected {
+      background-color: #f44336;
+    }
+  </style>
+</head>
+<body>
+  <h1>📋 Logs for: {{ site_name }}</h1>
+  
+  <div class="controls">
+    <button onclick="clearLogs()">Clear</button>
+    <button onclick="toggleAutoScroll()">Auto Scroll: <span id="auto-scroll-status">ON</span></button>
+    <button onclick="downloadLogs()">Download</button>
+    <a href="/sites" style="color: #4CAF50; text-decoration: none; margin-left: 20px;">← Back to Sites</a>
+  </div>
+  
+  <div id="status" class="status connected">Connected</div>
+  
+  <div id="logs">Loading logs...</div>
+
+  <script>
+    const siteName = "{{ site_name }}";
+    let autoScroll = true;
+    let logsContent = '';
+    
+    async function fetchLogs() {
+      try {
+        const res = await fetch(`/api/logs/${siteName}`);
+        const data = await res.json();
+        
+        if (data.logs) {
+          logsContent = data.logs;
+          displayLogs(data.logs);
+          document.getElementById('status').className = 'status connected';
+          document.getElementById('status').textContent = 'Connected';
+        }
+      } catch (err) {
+        console.error('Failed to fetch logs:', err);
+        document.getElementById('status').className = 'status disconnected';
+        document.getElementById('status').textContent = 'Disconnected';
+      }
+    }
+    
+    function displayLogs(logs) {
+      const logsDiv = document.getElementById('logs');
+      const lines = logs.split('\n');
+      
+      logsDiv.innerHTML = lines.map(line => {
+        let className = 'log-line';
+        if (line.includes('ERROR') || line.includes('error')) {
+          className += ' log-error';
+        } else if (line.includes('WARNING') || line.includes('warn')) {
+          className += ' log-warning';
+        } else if (line.includes('INFO') || line.includes('Installing')) {
+          className += ' log-info';
+        }
+        return `<div class="${className}">${escapeHtml(line)}</div>`;
+      }).join('');
+      
+      if (autoScroll) {
+        logsDiv.scrollTop = logsDiv.scrollHeight;
+      }
+    }
+    
+    function escapeHtml(text) {
+      const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      };
+      return text.replace(/[&<>"']/g, m => map[m]);
+    }
+    
+    function clearLogs() {
+      document.getElementById('logs').innerHTML = '';
+      logsContent = '';
+    }
+    
+    function toggleAutoScroll() {
+      autoScroll = !autoScroll;
+      document.getElementById('auto-scroll-status').textContent = autoScroll ? 'ON' : 'OFF';
+    }
+    
+    function downloadLogs() {
+      const blob = new Blob([logsContent], { type: 'text/plain' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${siteName}-logs-${new Date().toISOString()}.txt`;
+      a.click();
+      window.URL.revokeObjectURL(url);
+    }
+    
+    // Fetch logs every 2 seconds
+    setInterval(fetchLogs, 2000);
+    
+    // Initial fetch
+    fetchLogs();
+  </script>
+</body>
+</html>

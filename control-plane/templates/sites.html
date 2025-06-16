@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>ERPNext Sites</title></head>
+<body>
+  <h1>Existing Sites</h1>
+  <ul>
+    {% for site in sites %}
+    <li>
+      <a href="http://{{ site }}.orbscope.local" target="_blank">{{ site }}</a>
+      <button onclick="deleteSite('{{ site }}')">Delete</button>
+    </li>
+    {% else %}
+    <li>No sites found.</li>
+    {% endfor %}
+  </ul>
+<script>
+async function deleteSite(site) {
+  if(!confirm(`Delete ${site}?`)) return;
+  const res = await fetch(`/api/site/${site}/delete`, { method:'POST' });
+  const data = await res.json();
+  if(res.ok) alert(data.message), location.reload();
+  else alert('Error: '+data.message);
+}
+</script>
+</body>
+</html>

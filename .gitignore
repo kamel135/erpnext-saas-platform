@@ -1,38 +1,53 @@
-# Environment variables
-.env
-.env.local
-.env.*.local
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv/
+*.egg-info/
+dist/
+build/
 
-# Dependencies
-node_modules/
-platform/node_modules/
-
-# Docker volumes
-postgres_data/
-redis_data/
-platform_db/
-
-# Tenant data
-tenants/*/
-
-# Logs
+# Docker
 *.log
-logs/
+docker-compose.override.yml
 
-# OS files
-.DS_Store
-Thumbs.db
+# Sites data
+saas_sites/
+sites/
+
+# Secrets and sensitive data
+.env
+*.env
+*.key
+*.pem
+*.crt
+secrets/
 
 # IDE
 .vscode/
 .idea/
 *.swp
 *.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
 
 # Backups
-backups/*.sql
-backups/*.tar.gz
+*.bak
+*.backup
+backups/
+
+# Logs
+logs/
+*.log
 
 # Temporary files
-*.tmp
-*.temp
+tmp/
+temp/

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - ERPNext SaaS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h3><i class="bi bi-cloud-fill"></i> ERPNext SaaS</h3>
+        </div>
+        <ul class="sidebar-menu">
+            <li class="active">
+                <a href="/dashboard"><i class="bi bi-speedometer2"></i> لوحة التحكم</a>
+            </li>
+            <li>
+                <a href="/tenants"><i class="bi bi-building"></i> عملائي</a>
+            </li>
+            <li>
+                <a href="/create-tenant"><i class="bi bi-plus-circle"></i> عميل جديد</a>
+            </li>
+            <li>
+                <a href="/billing"><i class="bi bi-credit-card"></i> الفواتير</a>
+            </li>
+            <li>
+                <a href="/support"><i class="bi bi-headset"></i> الدعم</a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Bar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-white mb-4 shadow-sm">
+            <div class="container-fluid">
+                <button class="navbar-toggler" id="sidebarToggle">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="ms-auto d-flex align-items-center">
+                    <div class="dropdown">
+                        <button class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i> أحمد محمد
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/profile">الملف الشخصي</a></li>
+                            <li><a class="dropdown-item" href="/settings">الإعدادات</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/logout">تسجيل خروج</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Dashboard Content -->
+        <div class="container-fluid">
+            <!-- Stats Cards -->
+            <div class="row mb-4">
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card stats-card border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <h6 class="text-muted mb-2">إجمالي العملاء</h6>
+                                    <h3 class="mb-0">12</h3>
+                                    <span class="badge bg-success">+15%</span>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="stats-icon bg-primary">
+                                        <i class="bi bi-building"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card stats-card border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <h6 class="text-muted mb-2">الإيرادات الشهرية</h6>
+                                    <h3 class="mb-0">$3,450</h3>
+                                    <span class="badge bg-success">+8%</span>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="stats-icon bg-success">
+                                        <i class="bi bi-currency-dollar"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card stats-card border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <h6 class="text-muted mb-2">معدل الاستخدام</h6>
+                                    <h3 class="mb-0">78%</h3>
+                                    <span class="badge bg-warning">عادي</span>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="stats-icon bg-info">
+                                        <i class="bi bi-cpu"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card stats-card border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <h6 class="text-muted mb-2">التذاكر المفتوحة</h6>
+                                    <h3 class="mb-0">3</h3>
+                                    <span class="badge bg-danger">عاجل</span>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="stats-icon bg-warning">
+                                        <i class="bi bi-headset"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Tenants -->
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0">أحدث العملاء</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>الشركة</th>
+                                            <th>القطاع</th>
+                                            <th>الخطة</th>
+                                            <th>الحالة</th>
+                                            <th>الإجراءات</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="company-icon bg-primary">
+                                                        <i class="bi bi-hospital"></i>
+                                                    </div>
+                                                    <div class="ms-3">
+                                                        <h6 class="mb-0">مستشفى النور</h6>
+                                                        <small class="text-muted">alnoor.erp.com</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td><span class="badge bg-info">صحة</span></td>
+                                            <td>Professional</td>
+                                            <td><span class="badge bg-success">نشط</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-primary">
+                                                    <i class="bi bi-box-arrow-up-right"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center
+                                                    <div class="company-icon bg-success">
+                                                        <i class="bi bi-book"></i>
+                                                    </div>
+                                                    <div class="ms-3">
+                                                        <h6 class="mb-0">مدرسة المستقبل</h6>
+                                                        <small class="text-muted">future.erp.com</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td><span class="badge bg-success">تعليم</span></td>
+                                            <td>Enterprise</td>
+                                            <td><span class="badge bg-success">نشط</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-primary">
+                                                    <i class="bi bi-box-arrow-up-right"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="company-icon bg-warning">
+                                                        <i class="bi bi-gear"></i>
+                                                    </div>
+                                                    <div class="ms-3">
+                                                        <h6 class="mb-0">مصنع الأمل</h6>
+                                                        <small class="text-muted">amal.erp.com</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td><span class="badge bg-warning">صناعة</span></td>
+                                            <td>Starter</td>
+                                            <td><span class="badge bg-warning">قيد الإنشاء</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-primary">
+                                                    <i class="bi bi-box-arrow-up-right"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Activity Timeline -->
+                <div class="col-lg-4">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0">آخر النشاطات</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="timeline">
+                                <div class="timeline-item">
+                                    <div class="timeline-marker bg-success"></div>
+                                    <div class="timeline-content">
+                                        <h6 class="mb-1">عميل جديد</h6>
+                                        <p class="mb-0 text-muted">تم إنشاء حساب مستشفى النور</p>
+                                        <small class="text-muted">منذ 5 دقائق</small>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-marker bg-info"></div>
+                                    <div class="timeline-content">
+                                        <h6 class="mb-1">ترقية خطة</h6>
+                                        <p class="mb-0 text-muted">مدرسة المستقبل ترقت للخطة Enterprise</p>
+                                        <small class="text-muted">منذ ساعة</small>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-marker bg-warning"></div>
+                                    <div class="timeline-content">
+                                        <h6 class="mb-1">تذكرة دعم</h6>
+                                        <p class="mb-0 text-muted">مصنع الأمل طلب دعم فني</p>
+                                        <small class="text-muted">منذ 3 ساعات</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/dashboard.js"></script>
+</body>
+</html>

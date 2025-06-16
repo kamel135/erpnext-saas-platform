@@ -1,50 +1,35 @@
 # ERPNext Multi-Tenant SaaS Platform
 
-<div align="center">
-  <img src="https://img.shields.io/badge/ERPNext-v15-blue.svg" alt="ERPNext Version">
-  <img src="https://img.shields.io/badge/Docker-Compose-brightgreen.svg" alt="Docker Compose">
-  <img src="https://img.shields.io/badge/Node.js-18+-green.svg" alt="Node.js">
-  <img src="https://img.shields.io/badge/PostgreSQL-15-blue.svg" alt="PostgreSQL">
-  <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License">
-</div>
+A powerful multi-tenant SaaS platform for ERPNext, enabling automatic provisioning of isolated ERPNext environments for different companies.
 
-## 🌟 نظرة عامة
+## 🚀 Features
 
-منصة SaaS متعددة المستأجرين لـ ERPNext تتيح إنشاء وإدارة مثيلات ERPNext منفصلة لكل عميل مع عزل كامل وإدارة متقدمة للموارد.
+- **Multi-Tenant Architecture**: Isolated ERPNext instances for each company
+- **Automatic Provisioning**: Create new ERPNext sites with a single click
+- **Docker-Based**: Fully containerized deployment
+- **Traefik Integration**: Automatic SSL and subdomain routing
+- **Web Interface**: User-friendly control panel for site management
+- **Real-time Monitoring**: Live logs and status tracking
 
-### لقطات الشاشة
-![Dashboard](docs/images/dashboard.png)
-*لوحة التحكم الرئيسية*
+## 🛠️ Tech Stack
 
-## ✨ المميزات
+- **Backend**: Python Flask
+- **Container**: Docker & Docker Compose
+- **Proxy**: Traefik
+- **ERP**: ERPNext v15
+- **Database**: MariaDB
+- **Cache**: Redis
 
-- 🏢 **Multi-Tenancy**: عزل كامل لكل عميل في Docker container منفصل
-- 🚀 **إنشاء سريع**: إنشاء مثيل ERPNext جديد في دقائق
-- 📊 **مراقبة الموارد**: مراقبة CPU والذاكرة في الوقت الفعلي
-- 💳 **نظام الفوترة**: خطط مرنة (Starter, Professional, Enterprise)
-- 🔒 **الأمان**: عزل كامل وSSL لكل عميل
-- 🎨 **واجهة سهلة**: لوحة تحكم عربية سهلة الاستخدام
-- 📱 **متجاوب**: يعمل على جميع الأجهزة
-- 🔄 **نسخ احتياطي**: نسخ احتياطي تلقائي يومي
+## 📋 Prerequisites
 
-## 🛠️ التقنيات المستخدمة
+- Ubuntu 20.04+ or similar Linux distribution
+- Docker and Docker Compose installed
+- Python 3.8+
+- At least 4GB RAM and 20GB storage
 
-### Backend
-- Node.js 18 + Express.js
-- PostgreSQL 15
-- Redis 7
-- Docker & Docker Compose
+## 🔧 Installation
 
-### Frontend
-- EJS Templates
-- Bootstrap 5
-- Vanilla JavaScript
-
-### Infrastructure
-- Nginx (Reverse Proxy)
-- Docker Containers
-- Shell Scripts
-
-## 📋 المتطلبات
-
-- Docker Engine 20.10+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/erpnext-saas-platform.git
+   cd erpnext-saas-platform

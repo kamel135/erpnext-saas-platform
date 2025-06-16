@@ -1,0 +1,103 @@
+version: "3.7"
+
+services:
+  mariadb:
+    image: mariadb:10.6
+    restart: unless-stopped
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --skip-character-set-client-handshake
+    environment:
+      MYSQL_ROOT_PASSWORD: {{ db_root_password }}
+    volumes:
+      - {{ site_name }}-mariadb-data:/var/lib/mysql
+    networks:
+      - {{ site_name }}-network
+
+  redis-cache:
+    image: redis:6.2-alpine
+    restart: unless-stopped
+    volumes:
+      - {{ site_name }}-redis-cache:/data
+    networks:
+      - {{ site_name }}-network
+
+  redis-queue:
+    image: redis:6.2-alpine
+    restart: unless-stopped
+    volumes:
+      - {{ site_name }}-redis-queue:/data
+    networks:
+      - {{ site_name }}-network
+
+  backend:
+    image: {{ erpnext_image }}
+    restart: unless-stopped
+    depends_on:
+      - mariadb
+      - redis-cache
+      - redis-queue
+    volumes:
+      - {{ site_name }}-sites:/home/frappe/frappe-bench/sites
+      - {{ site_name }}-logs:/home/frappe/frappe-bench/logs
+    networks:
+      - {{ site_name }}-network
+      - webproxy
+
+  frontend:
+    image: {{ erpnext_image }}
+    restart: unless-stopped
+    command: ["nginx-entrypoint.sh"]
+    environment:
+      BACKEND: backend:8000
+      FRAPPE_SITE_NAME_HEADER: {{ domain }}
+      SOCKETIO: backend:9000
+    volumes:
+      - {{ site_name }}-sites:/home/frappe/frappe-bench/sites
+      - {{ site_name }}-logs:/home/frappe/frappe-bench/logs
+    depends_on:
+      - backend
+    networks:
+      - {{ site_name }}-network
+      - webproxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.{{ site_name }}.rule=Host(`{{ domain }}`)"
+      - "traefik.http.services.{{ site_name }}.loadbalancer.server.port=8080"
+      - "traefik.http.routers.{{ site_name }}.entrypoints=web"
+      - "traefik.docker.network=webproxy"
+
+  worker:
+    image: {{ erpnext_image }}
+    restart: unless-stopped
+    command: ["bench", "worker", "--queue", "default"]
+    volumes:
+      - {{ site_name }}-sites:/home/frappe/frappe-bench/sites
+    depends_on:
+      - backend
+    networks:
+      - {{ site_name }}-network
+
+  scheduler:
+    image: {{ erpnext_image }}
+    restart: unless-stopped
+    command: ["bench", "schedule"]
+    volumes:
+      - {{ site_name }}-sites:/home/frappe/frappe-bench/sites
+    depends_on:
+      - backend
+    networks:
+      - {{ site_name }}-network
+
+volumes:
+  {{ site_name }}-mariadb-data:
+  {{ site_name }}-redis-cache:
+  {{ site_name }}-redis-queue:
+  {{ site_name }}-sites:
+  {{ site_name }}-logs:
+
+networks:
+  {{ site_name }}-network:
+  webproxy:
+    external: true

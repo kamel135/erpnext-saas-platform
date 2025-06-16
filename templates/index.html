@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ERPNext SaaS Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>ERPNext Site Creator</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Create New Site</h5>
+                        <form id="createSiteForm">
+                            <div class="mb-3">
+                                <label class="form-label">Company Name</label>
+                                <input type="text" class="form-control" name="company_name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Admin Email</label>
+                                <input type="email" class="form-control" name="admin_email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Admin Password</label>
+                                <input type="password" class="form-control" name="admin_password" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Create Site</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('createSiteForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            try {
+                const response = await fetch('/api/create-site', {
+                    method: 'POST',
+                    body: JSON.stringify(Object.fromEntries(formData)),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const result = await response.json();
+                alert(result.message || 'Site creation started!');
+            } catch (error) {
+                alert('Error creating site: ' + error.message);
+            }
+        };
+    </script>
+</body>
+</html>

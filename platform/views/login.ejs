@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول - ERPNext SaaS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .login-image {
+            background: url('https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800') center/cover;
+            min-height: 500px;
+        }
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            padding: 12px 40px;
+        }
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="login-container">
+                    <div class="row g-0">
+                        <div class="col-md-6 d-none d-md-block">
+                            <div class="login-image"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-5">
+                                <div class="text-center mb-4">
+                                    <h2 class="fw-bold">مرحباً بك</h2>
+                                    <p class="text-muted">منصة ERPNext السحابية المتكاملة</p>
+                                </div>
+                                
+                                <form id="loginForm">
+                                    <div class="mb-3">
+                                        <label class="form-label">البريد الإلكتروني</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                            <input type="email" class="form-control" name="email" required>
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label">كلمة المرور</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                            <input type="password" class="form-control" name="password" required>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary w-100 mb-3">
+                                        <i class="bi bi-box-arrow-in-right me-2"></i>تسجيل الدخول
+                                    </button>
+                                </form>
+                                
+                                <div class="text-center">
+                                    <p class="mb-0">ليس لديك حساب؟ <a href="/register">سجل الآن</a></p>
+                                </div>
+                                
+                                <hr class="my-4">
+                                
+                                <div class="row g-3">
+                                    <div class="col-6">
+                                        <div class="d-flex align-items-center">
+                                            <div class="feature-icon me-3">
+                                                <i class="bi bi-shield-check"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0">آمن</h6>
+                                                <small class="text-muted">تشفير كامل</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="d-flex align-items-center">
+                                            <div class="feature-icon me-3">
+                                                <i class="bi bi-rocket"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0">سريع</h6>
+                                                <small class="text-muted">أداء فائق</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    document.getElementById('loginForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        // هنا يتم التحقق من البيانات
+        window.location.href = '/dashboard';
+    });
+    </script>
+</body>
+</html>

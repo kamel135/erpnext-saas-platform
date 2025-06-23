@@ -70,9 +70,37 @@ def start_services(compose_file_path, site_name):
     if not run_command(command, site_name):
         raise Exception(f"Failed to start services for {site_name}")
 
+def add_domain_to_hosts(domain):
+    """Adds a domain entry to /etc/hosts if not already present."""
+    hosts_path = "/etc/hosts"
+    hosts_entry = f"127.0.0.1 {domain}\n"
+
+    try:
+        with open(hosts_path, "r") as f:
+            if hosts_entry in f.readlines():
+                logging.info(f"{domain} already exists in /etc/hosts")
+                return True
+
+        with open(hosts_path, "a") as f:
+            f.write(hosts_entry)
+        logging.info(f"Added {domain} to /etc/hosts")
+        return True
+
+    except PermissionError:
+        logging.error("Permission denied: Cannot write to /etc/hosts. Run the script with sudo.")
+        return False
+    except Exception as e:
+        logging.error(f"Failed to update /etc/hosts: {e}")
+        return False
+
 def install_erpnext_site(site_name, site_domain, db_password, admin_password):
     """Installs a new ERPNext site inside the running containers."""
     logging.info(f"provision: Installing ERPNext on site {site_domain}...")
+
+    # Add domain to /etc/hosts
+    if not add_domain_to_hosts(site_domain):
+        logging.warning("Failed to add domain to /etc/hosts, but continuing installation...")
+
     compose_file = os.path.join(SITES_ROOT, site_name, 'docker-compose.yml')
     
     # Step 1: Configure the common_site_config.json

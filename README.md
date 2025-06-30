@@ -31,5 +31,5 @@ A powerful multi-tenant SaaS platform for ERPNext, enabling automatic provisioni
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/YOUR_USERNAME/erpnext-saas-platform.git
+   git clone https://github.com/kamel135/erpnext-saas-platform.git
    cd erpnext-saas-platform
